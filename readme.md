@@ -1,4 +1,4 @@
-This is a tool for converting grids of cartesian coordinates into Bsplines and saving a stepfile, of the results. That's it. 
+This is a tool for converting grids of cartesian coordinates into Bsplines surfaces and saving a stepfile, of the results. That's it. 
 
 **Run it like this: (bash)**
 ```bash
