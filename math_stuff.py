@@ -17,15 +17,15 @@ class multiSurfacePart():
         print("Creating 'MANIFOLD SURFACE SHAPE REPRESENTATION', and a bunch of other intuitively named stuff...")
         idx = 1
         s_manifold, idx = manifold_surface_shape_rep(idx, self.surfaces, filename)
-        s = s_manifold 
-        idx_manifold = idx-1
+        s = s_manifold
+        idx_manifold = idx
 
         print("Creating 'PRODUCT DEFINITION SHAPE' ")
         s_psd, idx = product_definition(idx)
         s += s_psd
-        idx_psd = idx-1
+        idx_psd = idx-11
         print("Completing step file contents")
-        s1 = shape_def_rep_Step(idx, idx_psd, s_manifold, s, filename) 
+        s1 = shape_def_rep_Step(idx, idx_psd, idx_manifold, s, filename)
         
         print("Writing stepfile")
         file = filename + ".step"

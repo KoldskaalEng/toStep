@@ -2,18 +2,19 @@ import numpy as np
 
 def product_definition(idx):
     # Dumb bullshit ->
-    # psd_idx = input idx 
+    # psd_idx = input idx
+    idx += 1
     s =  "#{n1} = PRODUCT_DEFINITION_SHAPE ( 'NONE', 'NONE',  #{n2} ) ;\n".format(n1 = idx, n2 = idx+1)
     s += "#{n2} = PRODUCT_DEFINITION ( 'UNKNOWN', '', #{n3}, #{n7} ) ;\n".format(n2 = idx+1, n3 = idx+2, n7 = idx+6)
-    s += "#{n3} = PRODUCT_DEFINITION_FORMATION_WITH_SPECIFIED_SOURCE ( 'ANY', '', #{n4}, .NOT_KNOWN. ) ;".format(n3 = idx+2, n4 = idx+3)
-    s += "#{n4} = PRODUCT ( 'SOLID1_AP214', 'SOLID1_AP214', '', ( #{n5} ) ) ;".format(n4 = idx+3, n5 = idx+4)
-    s += "#{n5} = PRODUCT_CONTEXT ( 'NONE', #{n6}, 'mechanical' ) ;".format(n5 = idx+4, n6 = idx+5)
-    s += "#{n6} = APPLICATION_CONTEXT ( 'automotive_design' ) ;".format(n6 = idx +5)
-    s += "#{n7} = PRODUCT_DEFINITION_CONTEXT ( 'detailed design', #{n8}, 'design' ) ;".format(n7 = idx+6, n8 = idx+7)
-    s += "#{n8} = APPLICATION_CONTEXT ( 'automotive_design' ) ;".format(n8 = idx + 7) # Could this simply point to n6 instead, who knows. Do I care: no.
-    s += "#{n9} = APPLICATION_PROTOCOL_DEFINITION ( 'draft international standard', 'automotive_design', 1998, #{n6} ) ;".format(n9 = idx + 8, n6 = idx + 5)
-    s += "#{n10} = APPLICATION_PROTOCOL_DEFINITION ( 'draft international standard', 'automotive_design', 1998, #{n8} ) ;".format(n10 = idx+9, n8 = idx + 7)
-    s += "#{n11} = PRODUCT_RELATED_PRODUCT_CATEGORY ( 'part', '', ( #{n4} ) ) ;".format(n11 = idx +10, n4 = idx + 3)
+    s += "#{n3} = PRODUCT_DEFINITION_FORMATION_WITH_SPECIFIED_SOURCE ( 'ANY', '', #{n4}, .NOT_KNOWN. ) ;\n".format(n3 = idx+2, n4 = idx+3)
+    s += "#{n4} = PRODUCT ( 'SOLID1_AP214', 'SOLID1_AP214', '', ( #{n5} ) ) ;\n".format(n4 = idx+3, n5 = idx+4)
+    s += "#{n5} = PRODUCT_CONTEXT ( 'NONE', #{n6}, 'mechanical' ) ;\n".format(n5 = idx+4, n6 = idx+5)
+    s += "#{n6} = APPLICATION_CONTEXT ( 'automotive_design' ) ;\n".format(n6 = idx +5)
+    s += "#{n7} = PRODUCT_DEFINITION_CONTEXT ( 'detailed design', #{n8}, 'design' ) ;\n".format(n7 = idx+6, n8 = idx+7)
+    s += "#{n8} = APPLICATION_CONTEXT ( 'automotive_design' ) ;\n".format(n8 = idx + 7) # Could this simply point to n6 instead, who knows. Do I care: no.
+    s += "#{n9} = APPLICATION_PROTOCOL_DEFINITION ( 'draft international standard', 'automotive_design', 1998, #{n6} ) ;\n".format(n9 = idx + 8, n6 = idx + 5)
+    s += "#{n10} = APPLICATION_PROTOCOL_DEFINITION ( 'draft international standard', 'automotive_design', 1998, #{n8} ) ;\n".format(n10 = idx+9, n8 = idx + 7)
+    s += "#{n11} = PRODUCT_RELATED_PRODUCT_CATEGORY ( 'part', '', ( #{n4} ) ) ;\n".format(n11 = idx +10, n4 = idx + 3)
     idx += 11 
 
     return s, idx
@@ -85,13 +86,14 @@ def manifold_surface_shape_rep(idx: int, adv_Faces:list, filename: str):
     for face in adv_Faces:
          s_face, idx = Advanced_face_stp(idx, face)
          s += s_face
-         s += "#{n} = OPEN_SHELL ( 'NONE', ( #{adv_face} ) ) ;".format(n = idx, adv_face = idx-1)
+         s += "#{n} = OPEN_SHELL ( 'NONE', ( #{adv_face} ) ) ;\n".format(n = idx, adv_face = idx-1)
          openshell_idx_str += " #{n},".format(n = idx)
          idx += 1
 
-    s += "#{n} = SHELL_BASED_SURFACE_MODEL ( 'NONE', ( {openshells} ) );".format(n = idx, openshells = openshell_idx_str[:-1])
+    s += "#{n} = SHELL_BASED_SURFACE_MODEL ( 'NONE', ( {openshells} ) );\n".format(n = idx, openshells = openshell_idx_str[:-1])
     idx += 1
-    s += "#{n} = MANIFOLD_SURFACE_SHAPE_REPRESENTATION ( '{filename}', ( #{shell_based_surface_model}, #{axis} ), #{unit} ) ;".format(n = idx, filename = filename, shell_based_surface_model = idx-1,axis = axis_idx, unit = units_idx )
+    s += "#{n} = MANIFOLD_SURFACE_SHAPE_REPRESENTATION ( '{filename}', ( #{shell_based_surface_model}, #{axis} ), #{unit} ) ;\n".format(
+        n = idx, filename = filename, shell_based_surface_model = idx-1, axis = axis_idx, unit = units_idx )
     
     return s, idx
 
@@ -190,7 +192,7 @@ ENDSEC;
 
 DATA;\n""".format(name = filename)
 
-    end_of_file = """ENDSEC;
+    end_of_file = """\nENDSEC;
 END-ISO-10303-21;"""
 
     s = header + s
@@ -252,7 +254,7 @@ def B_spline_curve_step(idx, P, p):
 
     # Create the Spline itself: 
     s += "#{n} = B_SPLINE_CURVE_WITH_KNOTS ( 'NONE', {pi},\n".format(n = idx, pi = p)
-    s += "( " + cart_pts[:-1] + "),\n" # [:-1] to remove the last comma 
+    s += "( " + cart_pts[:-2] + "),\n" # [:-1] to remove the last comma
     s += ".UNSPECIFIED., .F., .F.,\n"
     s += "( "
     n_knots = len(P)-p + 1
