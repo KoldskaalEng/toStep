@@ -182,10 +182,10 @@ FILE_DESCRIPTION (( 'STEP AP214' ),
     '1' );
 FILE_NAME ('{name}.STEP',
     '2025-01-01T10:00:00',
-    ( '!!!! NOT FOR COMMERCIAL USE !!!!' ),
-    ( 'Christian von Koldskaal' ),
+    ( '' ),
+    ( 'Made using toStep by Christian Bak Winther' ),
     'Product ENgineering with Intuitive Surfacing',
-    '!!!! PENIS v0.1 !!!!',
+    '',
     '' );
 FILE_SCHEMA (( 'AUTOMOTIVE_DESIGN' ));
 ENDSEC;

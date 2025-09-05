@@ -1,4 +1,4 @@
-This is a tool for converting grids of cartesian coordinates into Bsplines surfaces and saving a stepfile, of the results. That's it. 
+This is a tool for converting grids of cartesian coordinates into Bsplines surfaces and saving a stepfile of the results.
 
 **Run it like this: (bash)**
 ```bash
@@ -42,4 +42,3 @@ python make_step.py test_prop.txt -p 5
 ```bash
 python make_step.py test_prop.txt --stpfilename some_other_name
 ```
-This script is not intended for commercial use.
